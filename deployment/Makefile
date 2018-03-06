@@ -333,6 +333,14 @@ pep8:
 	@pep8 --repeat --ignore=E203,E121,E122,E123,E124,E125,E126,E127,E128,E402  --exclude='../django_project/.pycharm_helpers','../django_project/*/migrations/','../django_project/*/urls.py','../django_project/core/settings/secret.py' ../django_project || true
 
 
+flake8:
+	@echo
+	@echo "-----------"
+	@echo "Flake8 issues"
+	@echo "-----------"
+	@flake8 --version
+	@flake8 ../django_project
+
 # --------------- help --------------------------------
 
 help:
