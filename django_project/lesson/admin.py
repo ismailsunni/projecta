@@ -8,6 +8,8 @@ from lesson.models.section import Section
 from lesson.models.specification import Specification
 from lesson.models.worksheet import Worksheet
 from lesson.models.worksheet_question import WorksheetQuestion
+from lesson.models.curriculum import Curriculum
+from lesson.models.curriculum_worksheets import CurriculumWorksheets
 
 
 class AnswerAdmin(admin.ModelAdmin):
@@ -59,9 +61,24 @@ class WorksheetQuestionAdmin(admin.ModelAdmin):
     fields = ('worksheet', 'question', 'question_image')
 
 
+class CurriculumAdmin(admin.ModelAdmin):
+    """Curriculum admin model."""
+    list_display = ('title', 'project', 'competency', 'owner',)
+    list_filter = ('project', 'owner', 'presenters')
+
+
+class CurriculumWorksheetsAdmin(admin.ModelAdmin):
+    """Curriculum worksheet admin model."""
+    list_display = ('curriculum', 'worksheet', 'sequence_number',)
+    list_filter = (
+        'curriculum__project', 'curriculum__owner', 'curriculum__presenters')
+
+
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(FurtherReading, FurtherReadingAdmin)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Specification, SpecificationAdmin)
 admin.site.register(Worksheet, WorksheetAdmin)
 admin.site.register(WorksheetQuestion, WorksheetQuestionAdmin)
+admin.site.register(Curriculum, CurriculumAdmin)
+admin.site.register(CurriculumWorksheets, CurriculumWorksheetsAdmin)
