@@ -47,6 +47,11 @@ from lesson.views.specification import (
     SpecificationDeleteView
 )
 
+from lesson.views.curriculum import (
+    CurriculumListView,
+    CurriculumCreateView,
+)
+
 urlpatterns = patterns(
     '',
     # Section
@@ -190,6 +195,13 @@ urlpatterns = patterns(
               'delete/(?P<pk>[\w-]+)/$',
         view=AnswerDeleteView.as_view(),
         name='answer-delete'),
+    # Curriculum
+    url(regex='^(?P<project_slug>[\w-]+)/curriculum/list/$',
+        view=CurriculumListView.as_view(),
+        name='curriculum-list'),
+    url(regex='^(?P<project_slug>[\w-]+)/curriculum/create/$',
+        view=CurriculumCreateView.as_view(),
+        name='curriculum-create'),
 )
 
 

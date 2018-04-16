@@ -22,6 +22,7 @@ from vota.models import Committee, Ballot
 from changes.models import SponsorshipPeriod
 from certification.models import CertifyingOrganisation
 from lesson.models.section import Section
+from lesson.models.curriculum import Curriculum
 from django.conf import settings
 from django.shortcuts import redirect
 
@@ -141,16 +142,13 @@ class ProjectDetailView(ProjectMixin, DetailView):
         context['committees'] = Committee.objects.filter(project=self.object)
         context['versions'] = Version.objects.filter(
             project=self.object).order_by('-padded_version')[:5]
-        context['sponsors'] = \
-            SponsorshipPeriod.objects.filter(
-                project=self.object).order_by('-sponsorship_level__value')
-        context['sections'] = \
-            Section.objects.filter(
-                project=self.object)
+        context['sponsors'] = SponsorshipPeriod.objects.filter(
+            project=self.object).order_by('-sponsorship_level__value')
+        context['sections'] = Section.objects.filter(project=self.object)
+        context['curricula'] = Curriculum.objects.filter(project=self.object)
         context['screenshots'] = self.object.screenshots.all()
-        context['organisations'] = \
-            CertifyingOrganisation.objects.filter(
-                project=self.object, approved=True)
+        context['organisations'] = CertifyingOrganisation.objects.filter(
+            project=self.object, approved=True)
         return context
 
     def get_queryset(self):

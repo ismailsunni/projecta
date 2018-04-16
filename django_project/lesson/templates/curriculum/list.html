@@ -1,0 +1,66 @@
+{% extends "project_base.html" %}
+{% load thumbnail %}
+{% load staticfiles %}
+{% load custom_markup %}
+
+{% block title %} {{ project.name }} Curriculum {% endblock %}
+
+{% block js_head %}
+{% endblock js_head %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block page_title %}
+    <h1 xmlns="http://www.w3.org/1999/html">
+        Curriculum for {{ project.name }}
+    </h1>
+{% endblock page_title %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="text-muted">
+            {{ project.name }} Curriculum
+            <div class="pull-right btn-group">
+                {% if user_can_edit %}
+                    <a class="btn btn-default btn-mini tooltip-toggle"
+                       href='{% url "curriculum-create" project_slug=project.slug %}'
+                       data-title="Create New Curriculum">
+                        {% show_button_icon "add" %}
+                    </a>
+                {% endif %}
+                <a class="btn btn-default btn-mini tooltip-toggle"
+                   href='{% url "project-detail" slug=project.slug %}'
+                   data-title="Back">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </a>
+            </div>
+        </h1>
+    </div>
+    {% for curriculum in curricula %}
+        {% include 'curriculum/includes/curriculum-list-detail.html' %}
+    {%  endfor %}
+    <div class="row" style="margin-left: 400pt;">
+            {% if is_paginated %}
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                  <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                  <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+        </div>
+{% endblock %}
