@@ -26,11 +26,11 @@
                    href='{% url "curriculum-delete" project_slug=curriculum.project.slug slug=curriculum.slug %}'>
                     <span class="glyphicon glyphicon-minus"></span>
                 </a>
-{#                <a class="btn btn-default btn-mini tooltip-toggle"#}
-{#                   data-title="Update {{ curriculum.title }}"#}
-{#                   href='{% url "curriculum-update" project_slug=curriculum.project.slug slug=curriculum.slug %}'>#}
-{#                    <span class="glyphicon glyphicon-pencil"></span>#}
-{#                </a>#}
+                <a class="btn btn-default btn-mini tooltip-toggle"
+                   data-title="Update {{ curriculum.title }}"
+                   href='{% url "curriculum-update" project_slug=curriculum.project.slug slug=curriculum.slug %}'>
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
             </div>
         {% endif %}
     </div>

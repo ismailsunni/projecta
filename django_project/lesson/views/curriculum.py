@@ -76,13 +76,13 @@ class CurriculumListView(CurriculumMixin, PaginationMixin, ListView):
 
         :raises: Http404
         """
-        section_qs = Curriculum.objects.all()
+        curriculum_qs = Curriculum.objects.all()
         project_slug = self.kwargs.get('project_slug', None)
         if project_slug:
             project = get_object_or_404(Project, slug=project_slug)
-            return section_qs.filter(project=project)
+            return curriculum_qs.filter(project=project)
         else:
-            raise Http404('Sorry! We could not find your section!')
+            raise Http404('Sorry! We could not find your curriculum!')
 
 
 class CurriculumCreateView(LoginRequiredMixin, CurriculumMixin, CreateView):
@@ -144,3 +144,44 @@ class CurriculumDeleteView(
         return reverse('curriculum-list', kwargs={
             'project_slug': self.object.project.slug
         })
+
+
+# noinspection PyAttributeOutsideInit
+class CurriculumUpdateView(
+        LoginRequiredMixin,
+        CurriculumMixin,
+        UpdateView):
+    """Update view for Curriculum."""
+
+    context_object_name = 'curriculum'
+    template_name = 'update.html'
+    update_label = _('Update curriculum')
+
+    def get_form_kwargs(self):
+        """Get keyword arguments from form.
+
+        :returns keyword argument from the form
+        :rtype: dict
+        """
+        kwargs = super(CurriculumUpdateView, self).get_form_kwargs()
+        project_slug = self.kwargs.get('project_slug', None)
+        kwargs['project'] = get_object_or_404(Project, slug=project_slug)
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def get_success_url(self):
+        """Define the redirect URL.
+
+        After successful update of the object, the User will be redirected to
+        the curriculum list page for the object's parent Project.
+
+        :returns: URL
+        :rtype: HttpResponse
+        """
+        url = '{url}#{anchor}'.format(
+            url=reverse(
+                'curriculum-list',
+                kwargs={'project_slug': self.object.project.slug}),
+            anchor=self.object.slug
+        )
+        return url
