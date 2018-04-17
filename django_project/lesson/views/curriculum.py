@@ -120,3 +120,27 @@ class CurriculumCreateView(LoginRequiredMixin, CurriculumMixin, CreateView):
         kwargs['project'] = get_object_or_404(Project, slug=project_slug)
         kwargs.update({'user': self.request.user})
         return kwargs
+
+# noinspection PyAttributeOutsideInit
+class CurriculumDeleteView(
+        LoginRequiredMixin,
+        CurriculumMixin,
+        DeleteView):
+    """Delete view for Section."""
+
+    context_object_name = 'curriculum'
+    template_name = 'curriculum/delete.html'
+
+    def get_success_url(self):
+        """Define the redirect URL.
+
+        After successful deletion  of the object, the User will be redirected
+        to the Curriculum list page
+        for the object's parent Project.
+
+        :returns: URL
+        :rtype: HttpResponse
+        """
+        return reverse('curriculum-list', kwargs={
+            'project_slug': self.object.project.slug
+        })

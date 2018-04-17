@@ -9,8 +9,8 @@
          {{ curriculum.competency }}
     </div>
     <div class="col-lg-3">
-{#        {% if user_can_edit %}#}
-{#            <div class="btn-group pull-right">#}
+        {% if user_can_edit %}
+            <div class="btn-group pull-right">
 {#                <a class="btn btn-default btn-mini tooltip-toggle"#}
 {#                   href='{% url "worksheet-create" project.slug section.slug %}'#}
 {#                   data-title="Create New Worksheet">#}
@@ -21,22 +21,18 @@
 {#                   data-title="Worksheet Order">#}
 {#                    <span class="glyphicon glyphicon-sort-by-order"></span>#}
 {#                </a>#}
+                <a class="btn btn-default btn-mini tooltip-toggle"
+                   data-title="Delete {{ curriculum.title }}"
+                   href='{% url "curriculum-delete" project_slug=curriculum.project.slug slug=curriculum.slug %}'>
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
 {#                <a class="btn btn-default btn-mini tooltip-toggle"#}
-{#                   data-title="Delete {{ section.name }}"#}
-{#                   href='{% url "curriculum-delete" project_slug=section.project.slug slug=section.slug %}'>#}
-{#                    <span class="glyphicon glyphicon-minus"></span>#}
-{#                </a>#}
-{#                <a class="btn btn-default btn-mini tooltip-toggle"#}
-{#                   data-title="Update {{ section.name }}"#}
-{#                   href='{% url "currriculum-update" project_slug=section.project.slug slug=section.slug %}'>#}
+{#                   data-title="Update {{ curriculum.title }}"#}
+{#                   href='{% url "curriculum-update" project_slug=curriculum.project.slug slug=curriculum.slug %}'>#}
 {#                    <span class="glyphicon glyphicon-pencil"></span>#}
 {#                </a>#}
-{#            </div>#}
-{#        {% endif %}#}
+            </div>
+        {% endif %}
     </div>
 </div>
-
-{% for worksheet in worksheets %}
-   {% include 'curriculum/includes/row-worksheet.html' %}
-{% endfor %}
 <hr>
