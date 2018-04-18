@@ -52,6 +52,7 @@ from lesson.views.curriculum import (
     CurriculumCreateView,
     CurriculumDeleteView,
     CurriculumUpdateView,
+    CurriculumDetailView,
 )
 
 urlpatterns = patterns(
@@ -210,6 +211,9 @@ urlpatterns = patterns(
     url(regex='^(?P<project_slug>[\w-]+)/curriculum/(?P<slug>[\w-]+)/update/$',
         view=CurriculumUpdateView.as_view(),
         name='curriculum-update'),
+    url(regex='^(?P<project_slug>[\w-]+)/curriculum/(?P<slug>[\w-]+)/detail/$',
+        view=CurriculumDetailView.as_view(),
+        name='curriculum-detail'),
 )
 
 

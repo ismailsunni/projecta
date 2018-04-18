@@ -1,0 +1,147 @@
+{% extends "project_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load custom_markup %}
+{% load staticfiles %}
+{% load lesson_tags %}
+
+{% block title %}
+    {% trans 'Curriculum' %}
+{% endblock %}
+
+{% block css_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/organisation_detail.css' %}">
+{% endblock css_head %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block page_title %}
+    <h2>{% trans 'Curriculum' %}</h2>
+{% endblock page_title %}
+
+{% block content %}
+{#    WARNING                                                                  #}
+{#    PLEASE UPDATE THE PRINT TEMPLATE AS WELL IF YOU UPDATE THIS FILE. THANKS #}
+{#    WARNING                                                                  #}
+    <div class="row page-header" style="border-bottom: 8px solid {{ curriculum.project.accent_color }};">
+        <div class="col-lg-12">
+            <div class="pull-right">
+                <div class="btn-group worksheet-action" style="display:none;">
+                    <a class="btn btn-default btn-mini tooltip-toggle"
+                        href='{% url "curriculum-list" project_slug=curriculum.project.slug %}#{{ curriculum.slug }}'
+                        data-title="{% trans 'Back' %}">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </a>
+{#                    <a id="download-pdf-button" class="btn btn-default btn-mini tooltip-toggle" target="_blank"#}
+{#                       href='{% url "worksheet-print" project_slug=worksheet.section.project.slug section_slug=worksheet.section.slug pk=worksheet.pk %}'#}
+{#                       data-title="{% blocktrans with module=worksheet.module %}Download {{ module }} as PDF{% endblocktrans %}">#}
+{#                        <span class="glyphicon glyphicon-download"></span>#}
+{#                    </a>#}
+                    {% if user_can_edit %}
+                        <a class="btn btn-default btn-mini btn-delete tooltip-toggle"
+                           href='{% url "curriculum-delete" project_slug=curriculum.project.slug slug=curriculum.slug %}'
+                           data-title="{% trans 'Delete' %} {{ curriculum.title }}">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </a>
+                        <a class="btn btn-default btn-mini tooltip-toggle"
+                           href='{% url "curriculum-update" project_slug=curriculum.project.slug slug=curriculum.slug %}'
+                           data-title="{% trans 'Edit' %} {{ curriculum.title }}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            {% if curriculum.project.image_file %}
+                <img src="{{ curriculum.project.image_file.url }}"
+                     style="
+                        display: block;
+                        height:auto;
+                        width:auto;
+                        max-height:100px;
+                        max-width:100px;">
+            {% endif %}
+        </div>
+        <div class="col-lg-8" style="text-align:right;">
+            <h2>
+                <strong>
+                    {% trans 'Curriculum' %} : {{ curriculum.title }}
+                </strong>
+            </h2>
+        </div>
+    </div>
+
+    <div class="row details-worksheet" style="margin-top:10px;">
+{#        <div class="col-lg-1">#}
+{#          <div class="pull-left" style="background-color:{{ worksheet.section.project.accent_color }};margin-left:-15px;">#}
+{#              <img src="{% static "img/info.png" %}" style="height:50px;width:50px">#}
+{#          </div>#}
+{#        </div>#}
+{#        <div class="col-lg-8">#}
+{#          <h3 class="custom-heading" style="margin-left:-40px"><strong>{{ worksheet.title }}</strong></h3>#}
+{#        </div>#}
+{#        <div class="col-lg-3">#}
+{#        </div>#}
+    </div>
+
+    <script>
+        $('.btn-delete').hover(
+            function (){
+                $(this).removeClass('btn-default').addClass('btn-danger')
+            },
+            function (){
+                $(this).removeClass('btn-danger').addClass('btn-default')
+            }
+        );
+        $('.btn-view').hover(
+            function (){
+                $(this).removeClass('btn-default').addClass('btn-primary')
+            },
+            function (){
+                $(this).removeClass('btn-primary').addClass('btn-default')
+            }
+        );
+        $('.btn-top-up').hover(
+            function (){
+                $(this).removeClass('btn-default').addClass('btn-success')
+            },
+            function (){
+                $(this).removeClass('btn-success').addClass('btn-default')
+            }
+        );
+        $('.page-header').hover(
+            function () {
+                $(this).find('.worksheet-action').show();
+            },
+             function () {
+                $(this).find('.worksheet-action').hide();
+            }
+        );
+        $('.requirement-table').hover(
+            function () {
+                $(this).find('.requirement-action').show();
+            },
+             function () {
+                $(this).find('.requirement-action').hide();
+            }
+        );
+        $('.question-answer').hover(
+            function () {
+                $(this).find('.question-answer-action').show();
+            },
+             function () {
+                $(this).find('.question-answer-action').hide();
+            }
+        );
+        $('.further-reading').hover(
+            function () {
+                $(this).find('.further-reading-action').show();
+            },
+             function () {
+                $(this).find('.further-reading-action').hide();
+            }
+        );
+    </script>
+{% endblock %}

@@ -139,7 +139,7 @@
                 {% endif %}
             </div>
             <div class="panel panel-default custom-panel clickable-panel" onclick="window.location='{% url 'curriculum-list' project_slug=project.slug %}';">
-                <h3>Curriculum</h3>
+                <h3>Curricula</h3>
                 {% if curricula %}
                     <h6 class="text-muted">
                     Teach and learn
@@ -154,14 +154,24 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    {% if user.is_staff or user == project.owner %}
-                        <h6><span>No curricula exist, but you can </span>
-                          <span>
-                            <a class="btn btn-default btn-mini" id="action_text" href='{% url "curriculum-create" project.slug %}'> create one
-                            </a>
-                          </span>
-                      </h6>
-                    {% endif %}
+                        {% if user.is_staff or user == project.owner %}
+                            <h6>
+                                <span>
+                                    No curricula exist, but you can
+                                </span>
+                                <span>
+                                    <a class="btn btn-default btn-mini" id="action_text" href='{% url "curriculum-create" project.slug %}'>
+                                        create one
+                                    </a>
+                                </span>
+                            </h6>
+                        {% else %}
+                            <h6>
+                                <span>
+                                    No curricula found.
+                                </span>
+                            </h6>
+                        {% endif %}
                 {% endif %}
             </div>
             <div class="panel panel-default custom-panel clickable-panel" onclick="window.location='certifyingorganisation/list/';">

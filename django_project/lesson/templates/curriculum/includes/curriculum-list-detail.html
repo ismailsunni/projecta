@@ -4,23 +4,15 @@
 <div class="row section-list" style="margin-top:5px;">
     <div class="col-lg-9" id="{{ curriculum.slug }}">
         <h3>
-            {{ curriculum.title }}
+            <a href='{% url "curriculum-detail" project_slug=curriculum.project.slug slug=curriculum.slug %}'>
+                {{ curriculum.title }}
+            </a>
         </h3>
          {{ curriculum.competency }}
     </div>
     <div class="col-lg-3">
         {% if user_can_edit %}
             <div class="btn-group pull-right">
-{#                <a class="btn btn-default btn-mini tooltip-toggle"#}
-{#                   href='{% url "worksheet-create" project.slug section.slug %}'#}
-{#                   data-title="Create New Worksheet">#}
-{#                    {% show_button_icon "add" %}#}
-{#                </a>#}
-{#                <a class="btn btn-default btn-mini tooltip-toggle"#}
-{#                   href='{% url "worksheet-order" project_slug=section.project.slug section_slug=section.slug %}'#}
-{#                   data-title="Worksheet Order">#}
-{#                    <span class="glyphicon glyphicon-sort-by-order"></span>#}
-{#                </a>#}
                 <a class="btn btn-default btn-mini tooltip-toggle"
                    data-title="Delete {{ curriculum.title }}"
                    href='{% url "curriculum-delete" project_slug=curriculum.project.slug slug=curriculum.slug %}'>

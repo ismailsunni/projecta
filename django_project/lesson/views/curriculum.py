@@ -9,6 +9,7 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     UpdateView,
+    DetailView,
 )
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -96,18 +97,17 @@ class CurriculumCreateView(LoginRequiredMixin, CurriculumMixin, CreateView):
         """Define the redirect URL
 
         After successful creation of the object, the User will be redirected
-        to the unapproved Version list page for the object's parent Project
+        to the curriculum detail page.
 
         :returns: URL
         :rtype: HttpResponse
         """
-        url = '{url}#{anchor}'.format(
-            url=reverse(
-                'curriculum-list',
-                kwargs={'project_slug': self.object.project.slug}),
-            anchor=self.object.slug
+        return reverse(
+            'curriculum-detail',
+            kwargs={
+                'project_slug': self.object.project.slug,
+                'slug': self.object.slug}
         )
-        return url
 
     def get_form_kwargs(self):
         """Get keyword arguments from form.
@@ -141,9 +141,10 @@ class CurriculumDeleteView(
         :returns: URL
         :rtype: HttpResponse
         """
-        return reverse('curriculum-list', kwargs={
-            'project_slug': self.object.project.slug
-        })
+        return reverse(
+            'curriculum-list', kwargs={
+                'project_slug': self.object.project.slug}
+        )
 
 
 # noinspection PyAttributeOutsideInit
@@ -178,10 +179,40 @@ class CurriculumUpdateView(
         :returns: URL
         :rtype: HttpResponse
         """
-        url = '{url}#{anchor}'.format(
-            url=reverse(
-                'curriculum-list',
-                kwargs={'project_slug': self.object.project.slug}),
-            anchor=self.object.slug
+        return reverse(
+            'curriculum-detail',
+            kwargs={
+                'project_slug': self.object.project.slug,
+                'slug': self.object.slug}
         )
-        return url
+
+
+# noinspection PyAttributeOutsideInit
+class CurriculumDetailView(CurriculumMixin, DetailView):
+    """Detail view for Curriculum."""
+    context_object_name = 'curriculum'
+    template_name = 'curriculum/detail.html'
+
+    def get_context_data(self, **kwargs):
+        """Get the context data which is passed to a template.
+
+        :param kwargs: Any arguments to pass to the superclass.
+        :type kwargs: dict
+
+        :returns: Context data which will be passed to the template.
+        :rtype: dict
+        """
+        context = super(CurriculumDetailView, self).get_context_data(**kwargs)
+
+        # Permissions
+        context['user_can_edit'] = False
+        if self.request.user in context[
+            'curriculum'].project.lesson_managers.all():
+            context['user_can_edit'] = True
+        elif self.request.user == context['curriculum'].owner:
+            context['user_can_edit'] = True
+        elif self.request.user.is_staff:
+            context['user_can_edit'] = True
+
+        return context
+
